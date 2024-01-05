@@ -8,7 +8,7 @@ import 'mylog.dart';
 
 final DateFormat _dateFormatYMD = DateFormat("yyyy-MM-dd");
 
-abstract class MyLogDart {
+abstract class MyLogProxy {
   static Future<Logger> init({
     bool debug = false,
   }) async {

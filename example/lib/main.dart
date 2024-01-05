@@ -5,7 +5,7 @@ import 'package:simple_file_log/simple_file_log.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await MyLogFlutter.init();
+  await MyLogProxy.init();
   runApp(const MyApp());
 }
 

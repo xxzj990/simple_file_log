@@ -8,7 +8,7 @@ import 'package:simple_file_log/src/mylog.dart';
 
 final DateFormat _dateFormatYMD = DateFormat("yyyy-MM-dd");
 
-abstract class MyLogFlutter {
+abstract class MyLogProxy {
   static String? _logFile;
 
   static String? get logFile => _logFile;
