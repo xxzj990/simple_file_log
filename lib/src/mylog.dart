@@ -62,3 +62,7 @@ abstract class MyLog {
   static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
   static String prettyJson(data) => _encoder.convert(data);
 }
+
+abstract class MyLogPlatform {
+  String? get logFile;
+}

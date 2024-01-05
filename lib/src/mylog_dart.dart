@@ -9,10 +9,15 @@ import 'mylog.dart';
 final DateFormat _dateFormatYMD = DateFormat("yyyy-MM-dd");
 
 abstract class MyLogProxy {
+  static String? _logFile;
+
+  static String? get logFile => _logFile;
+
   static Future<Logger> init({
     bool debug = false,
   }) async {
     final logFile = await _getLogFile(debug);
+    _logFile = logFile;
     return MyLog.init(
       level: debug ? Level.ALL : Level.INFO,
       logFile: File(logFile),
