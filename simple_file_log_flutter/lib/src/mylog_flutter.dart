@@ -6,6 +6,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:simple_file_log/simple_file_log.dart';
 
 class MyLogFlutter extends MyLogDart {
+  static final MyLogFlutter _instance = MyLogFlutter();
+
+  static MyLogFlutter get instance => _instance;
+
   String? _logFile;
 
   @override

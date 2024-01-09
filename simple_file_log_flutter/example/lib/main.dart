@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
+import 'package:simple_file_log_flutter/simple_file_log_flutter.dart';
 
-import 'package:flutter/services.dart';
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  (await MyLogFlutter.instance.init()).info('app start...');
   runApp(const MyApp());
 }
 
@@ -14,18 +14,7 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-
-  }
-
+class _MyAppState extends State<MyApp> with LogUtil {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,7 +23,12 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: \n'),
+          child: TextButton(
+            onPressed: () {
+              logger.fine('test log:${DateTime.now()}');
+            },
+            child: const Text('Test Log'),
+          ),
         ),
       ),
     );

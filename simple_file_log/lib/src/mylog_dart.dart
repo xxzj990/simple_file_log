@@ -6,17 +6,21 @@ import 'package:path/path.dart' as path;
 
 import 'mylog.dart';
 
-final DateFormat _dateFormatYMD = DateFormat("yyyy-MM-dd");
+class MyLogDart {
+  static final MyLogDart _instance = MyLogDart();
 
-abstract class MyLogProxy {
-  static String? _logFile;
+  static MyLogDart get instance => _instance;
 
-  static String? get logFile => _logFile;
+  String? _logFile;
 
-  static Future<Logger> init({
+  String? get logFile => _logFile;
+
+  DateFormat get dateFormatYMD => DateFormat("yyyy-MM-dd");
+
+  Future<Logger> init({
     bool debug = false,
   }) async {
-    final logFile = await _getLogFile(debug);
+    final logFile = await getLogFile(debug);
     _logFile = logFile;
     return MyLog.init(
       level: debug ? Level.ALL : Level.INFO,
@@ -25,17 +29,17 @@ abstract class MyLogProxy {
     );
   }
 
-  static void flush() => MyLog.flush();
+  void flush() => MyLog.flush();
 
-  static void setLevel(Level level) => MyLog.setLevel(level);
+  void setLevel(Level level) => MyLog.setLevel(level);
 
-  static Level getLevel() => MyLog.getLevel();
+  Level getLevel() => MyLog.getLevel();
 
-  static Logger getLogger({String? name}) => MyLog.getLogger(name: name);
+  Logger getLogger({String? name}) => MyLog.getLogger(name: name);
 
-  static String prettyJson(data) => MyLog.prettyJson(data);
+  String prettyJson(data) => MyLog.prettyJson(data);
 
-  static Future<String> _getLogFile(bool debug) async {
+  Future<String> getLogFile(bool debug) async {
     DateTime dateTime = DateTime.now();
     final String tempPath;
     if (debug) {
@@ -45,12 +49,12 @@ abstract class MyLogProxy {
     }
     Directory tmpDir = Directory(tempPath);
     if (!tmpDir.existsSync()) {
-      tmpDir.createSync();
+      tmpDir.createSync(recursive: true);
     }
 
     String prePath =
-        '$tempPath/${_dateFormatYMD.format(dateTime.subtract(const Duration(days: 1)))}.log';
-    String savePath = '$tempPath/${_dateFormatYMD.format(dateTime)}.log';
+        '$tempPath/${dateFormatYMD.format(dateTime.subtract(const Duration(days: 1)))}.log';
+    String savePath = '$tempPath/${dateFormatYMD.format(dateTime)}.log';
 
     // 清理文件(保存最近2天日志)
     var files = tmpDir.listSync();

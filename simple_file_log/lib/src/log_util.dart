@@ -1,9 +1,9 @@
 import 'package:logging/logging.dart';
 
-import 'mylog_dart.dart' if (dart.library.ui) 'mylog_flutter.dart';
+import 'mylog_dart.dart';
 
 mixin LogUtil {
   String get tag => '$runtimeType';
 
-  Logger get logger => MyLogProxy.getLogger(name: tag);
+  Logger get logger => MyLogDart.instance.getLogger(name: tag);
 }
