@@ -1,20 +1,19 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:simple_file_log/simple_file_log.dart';
 
-final DateFormat _dateFormatYMD = DateFormat("yyyy-MM-dd");
+class MyLogFlutter extends MyLogDart {
+  String? _logFile;
 
-abstract class MyLogProxy {
-  static String? _logFile;
+  @override
+  String? get logFile => _logFile;
 
-  static String? get logFile => _logFile;
-
-  static Future<Logger> init() async {
-    final logFile = await _getLogFile();
+  @override
+  Future<Logger> init({bool debug = false}) async {
+    final logFile = await getLogFile(debug);
     _logFile = logFile;
     return MyLog.init(
       level: kDebugMode ? Level.ALL : Level.INFO,
@@ -25,17 +24,8 @@ abstract class MyLogProxy {
     );
   }
 
-  static void flush() => MyLog.flush();
-
-  static void setLevel(Level level) => MyLog.setLevel(level);
-
-  static Level getLevel() => MyLog.getLevel();
-
-  static Logger getLogger({String? name}) => MyLog.getLogger(name: name);
-
-  static String prettyJson(data) => MyLog.prettyJson(data);
-
-  static Future<String> _getLogFile() async {
+  @override
+  Future<String> getLogFile(bool debug) async {
     Directory? tempDir;
     if (Platform.isIOS) {
       tempDir = await getApplicationDocumentsDirectory();
@@ -49,7 +39,7 @@ abstract class MyLogProxy {
       tmpDir.createSync();
     }
 
-    String savePath = '$tempPath/${_dateFormatYMD.format(dateTime)}.log';
+    String savePath = '$tempPath/${dateFormatYMD.format(dateTime)}.log';
 
     // 清理文件
     var files = tmpDir.listSync();

@@ -237,10 +237,9 @@ packages:
   simple_file_log:
     dependency: transitive
     description:
-      name: simple_file_log
-      sha256: f05bdcbc4ca74b3c61362ae6d3850cebb242dede3080686797933bd187ae839f
-      url: "https://pub.flutter-io.cn"
-    source: hosted
+      path: "../../simple_file_log"
+      relative: true
+    source: path
     version: "0.0.3"
   simple_file_log_flutter:
     dependency: "direct main"

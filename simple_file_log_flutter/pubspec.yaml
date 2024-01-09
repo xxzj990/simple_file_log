@@ -1,5 +1,5 @@
 name: simple_file_log_flutter
-description: "A new Flutter project."
+description: "A log util with file for flutter."
 version: 0.0.3
 homepage: https://github.com/xxzj990/simple_file_log
 
@@ -9,8 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  logging: ^1.2.0
   path_provider: ^2.1.2
-  simple_file_log: ^0.0.3
+  simple_file_log:
+    path: ../simple_file_log/
 
 dev_dependencies:
   flutter_lints: ^2.0.0
