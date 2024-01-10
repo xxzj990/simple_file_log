@@ -1,6 +1,6 @@
 name: simple_file_log
 description: "A log util with file."
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/xxzj990/simple_file_log
 
 environment:

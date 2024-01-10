@@ -6,39 +6,32 @@ import 'package:path/path.dart' as path;
 
 import 'mylog.dart';
 
-class MyLogDart {
-  static final MyLogDart _instance = MyLogDart();
+class MyLogDart with MyLogMixin {
+  MyLogDart._();
 
-  static MyLogDart get instance => _instance;
+  static final MyLogDart _instance = MyLogDart._();
+
+  static MyLogDart get log => _instance;
 
   String? _logFile;
 
+  @override
   String? get logFile => _logFile;
 
-  DateFormat get dateFormatYMD => DateFormat("yyyy-MM-dd");
+  @override
+  Future<Logger> init({bool? debug}) async {
+    final myDebug = debug ?? false;
 
-  Future<Logger> init({
-    bool debug = false,
-  }) async {
-    final logFile = await getLogFile(debug);
+    final logFile = await getLogFile(myDebug);
     _logFile = logFile;
     return MyLog.init(
-      level: debug ? Level.ALL : Level.INFO,
+      level: myDebug ? Level.ALL : Level.INFO,
       logFile: File(logFile),
-      append: !debug,
+      append: !myDebug,
     );
   }
 
-  void flush() => MyLog.flush();
-
-  void setLevel(Level level) => MyLog.setLevel(level);
-
-  Level getLevel() => MyLog.getLevel();
-
-  Logger getLogger({String? name}) => MyLog.getLogger(name: name);
-
-  String prettyJson(data) => MyLog.prettyJson(data);
-
+  @override
   Future<String> getLogFile(bool debug) async {
     DateTime dateTime = DateTime.now();
     final String tempPath;
@@ -66,4 +59,26 @@ class MyLogDart {
 
     return savePath;
   }
+}
+
+mixin MyLogMixin {
+  String? get logFile;
+
+  DateFormat get dateFormatYMD => DateFormat("yyyy-MM-dd");
+
+  Future<Logger> init({bool debug = false});
+
+  Future<String> getLogFile(bool debug);
+
+  void dispose() => MyLog.dispose();
+
+  void flush() => MyLog.flush();
+
+  void setLevel(Level level) => MyLog.setLevel(level);
+
+  Level getLevel() => MyLog.getLevel();
+
+  Logger getLogger({String? name}) => MyLog.getLogger(name: name);
+
+  String prettyJson(data) => MyLog.prettyJson(data);
 }

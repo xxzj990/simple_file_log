@@ -46,6 +46,12 @@ abstract class MyLog {
     return getLogger();
   }
 
+  static void dispose() {
+    Logger.root.clearListeners();
+    _sink?.close();
+    _sink = null;
+  }
+
   static void flush() async {
     await _sink?.flush();
   }
@@ -60,6 +66,7 @@ abstract class MyLog {
 
   /// json 格式化
   static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
+
   static String prettyJson(data) => _encoder.convert(data);
 }
 

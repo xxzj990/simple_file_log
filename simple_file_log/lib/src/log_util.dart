@@ -5,5 +5,5 @@ import 'mylog_dart.dart';
 mixin LogUtil {
   String get tag => '$runtimeType';
 
-  Logger get logger => MyLogDart.instance.getLogger(name: tag);
+  Logger get logger => MyLogDart.log.getLogger(name: tag);
 }
