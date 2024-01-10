@@ -10,7 +10,7 @@ class MyLogFlutter with MyLogMixin {
 
   static final MyLogFlutter _instance = MyLogFlutter._();
 
-  static MyLogFlutter get instance => _instance;
+  static MyLogFlutter get log => _instance;
 
   String? _logFile;
 
@@ -18,15 +18,17 @@ class MyLogFlutter with MyLogMixin {
   String? get logFile => _logFile;
 
   @override
-  Future<Logger> init({bool debug = false}) async {
-    final logFile = await getLogFile(debug);
+  Future<Logger> init({bool? debug}) async {
+    final myDebug = debug ?? kDebugMode;
+
+    final logFile = await getLogFile(myDebug);
     _logFile = logFile;
     return MyLog.init(
-      level: kDebugMode ? Level.ALL : Level.INFO,
+      level: myDebug ? Level.ALL : Level.INFO,
       logFile: File(logFile),
-      append: !kDebugMode,
+      append: !myDebug,
       consoleLog: (time, msg) =>
-          kDebugMode ? debugPrint('$time $msg') : debugPrint(msg),
+          myDebug ? debugPrint('$time $msg') : debugPrint(msg),
     );
   }
 
