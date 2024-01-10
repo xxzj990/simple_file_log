@@ -5,8 +5,10 @@ import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:simple_file_log/simple_file_log.dart';
 
-class MyLogFlutter extends MyLogDart {
-  static final MyLogFlutter _instance = MyLogFlutter();
+class MyLogFlutter with MyLogMixin {
+  MyLogFlutter._();
+
+  static final MyLogFlutter _instance = MyLogFlutter._();
 
   static MyLogFlutter get instance => _instance;
 

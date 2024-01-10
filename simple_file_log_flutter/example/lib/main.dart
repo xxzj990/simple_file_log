@@ -24,8 +24,12 @@ class _MyAppState extends State<MyApp> with LogUtil {
         ),
         body: Center(
           child: TextButton(
-            onPressed: () {
-              logger.fine('test log:${DateTime.now()}');
+            onPressed: () async {
+              logger.fine('test log0:${DateTime.now()}');
+              MyLogFlutter.instance.dispose();
+              logger.fine('test log1:${DateTime.now()}');
+              (await MyLogFlutter.instance.init()).info('app start2...');
+              logger.fine('test log2:${DateTime.now()}');
             },
             child: const Text('Test Log'),
           ),
