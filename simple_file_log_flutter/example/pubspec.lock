@@ -238,17 +238,17 @@ packages:
     dependency: transitive
     description:
       name: simple_file_log
-      sha256: "068279040d6f5684e7839a74d4a179cfc8c8aea3274bc894f1f1f0ec6762dc79"
+      sha256: "9cce61daab3569bd54e0645320532dc1c43fcf0c4af9d98d370ea15de9f26956"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.0.5"
+    version: "0.0.6"
   simple_file_log_flutter:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "0.0.4"
+    version: "0.0.6"
   sky_engine:
     dependency: transitive
     description: flutter

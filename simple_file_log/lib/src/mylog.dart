@@ -30,7 +30,9 @@ abstract class MyLog {
       final time = '${record.time}:';
       final msg = '${record.level.name}: '
           '${record.loggerName}: '
-          '${record.message}';
+          '${record.message}'
+          '${record.error != null ? '\n${record.error}' : ''}'
+          '${record.stackTrace != null ? '\n${record.stackTrace}' : ''}';
 
       final line = '$time $msg';
 

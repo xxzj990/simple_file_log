@@ -18,10 +18,10 @@ class MyLogFlutter with MyLogMixin {
   String? get logFile => _logFile;
 
   @override
-  Future<Logger> init({bool? debug}) async {
+  Future<Logger> init({bool? debug, int days = 3}) async {
     final myDebug = debug ?? kDebugMode;
 
-    final logFile = await getLogFile(myDebug);
+    final logFile = await getLogFile(myDebug, days: days);
     _logFile = logFile;
     return MyLog.init(
       level: myDebug ? Level.ALL : Level.INFO,
@@ -33,7 +33,7 @@ class MyLogFlutter with MyLogMixin {
   }
 
   @override
-  Future<String> getLogFile(bool debug) async {
+  Future<String> getLogFile(bool debug, {int days = 3}) async {
     Directory? tempDir;
     if (Platform.isIOS) {
       tempDir = await getApplicationDocumentsDirectory();
@@ -48,11 +48,17 @@ class MyLogFlutter with MyLogMixin {
     }
 
     String savePath = '$tempPath/${dateFormatYMD.format(dateTime)}.log';
+    final daysLog = <String>[savePath];
+    for (int i = (days - 1); i > 0; i--) {
+      String tmpPath =
+          '$tempPath/${dateFormatYMD.format(dateTime.subtract(Duration(days: i)))}.log';
+      daysLog.add(tmpPath);
+    }
 
     // 清理文件
     var files = tmpDir.listSync();
-    for (var file in files) {
-      if (file.path != savePath) {
+    for (final file in files) {
+      if (!daysLog.contains(file.path)) {
         file.deleteSync();
       }
     }
