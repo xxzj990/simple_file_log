@@ -73,9 +73,9 @@ mixin MyLogMixin {
 
   Future<String> getLogFile(bool debug, {int days = 3});
 
-  void dispose() => MyLog.dispose();
+  Future<void> dispose() => MyLog.dispose();
 
-  void flush() => MyLog.flush();
+  Future<void> flush() => MyLog.flush();
 
   void setLevel(Level level) => MyLog.setLevel(level);
 

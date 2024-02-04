@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -9,6 +10,8 @@ const _logTagMain = 'main';
 
 abstract class MyLog {
   static IOSink? _sink;
+
+  static StreamSubscription? _sub;
 
   static Logger init({
     Level level = Level.ALL,
@@ -26,7 +29,7 @@ abstract class MyLog {
     }
 
     Logger.root.level = level;
-    Logger.root.onRecord.listen((record) {
+    _sub = Logger.root.onRecord.listen((record) {
       final time = '${record.time}:';
       final msg = '${record.level.name}: '
           '${record.loggerName}: '
@@ -48,13 +51,14 @@ abstract class MyLog {
     return getLogger();
   }
 
-  static void dispose() {
+  static Future<void> dispose() async {
     Logger.root.clearListeners();
-    _sink?.close();
+    _sub?.cancel();
+    await _sink?.close();
     _sink = null;
   }
 
-  static void flush() async {
+  static Future<void> flush() async {
     await _sink?.flush();
   }
 
@@ -70,8 +74,4 @@ abstract class MyLog {
   static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
 
   static String prettyJson(data) => _encoder.convert(data);
-}
-
-abstract class MyLogPlatform {
-  String? get logFile;
 }
