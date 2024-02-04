@@ -1,3 +1,7 @@
+## 0.0.7
+
+* simple_file_log to 0.0.7
+
 ## 0.0.6
 
 * custom days
