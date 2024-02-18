@@ -19,10 +19,14 @@ class MyLogDart with MyLogMixin {
   String? get logFile => _logFile;
 
   @override
-  Future<Logger> init({bool? debug, int days = 3}) async {
+  Future<Logger> init({
+    bool? debug,
+    int days = 3,
+    String? pathStart,
+  }) async {
     final myDebug = debug ?? false;
 
-    final logFile = await getLogFile(myDebug, days: days);
+    final logFile = await getLogFile(myDebug, days: days, pathStart: pathStart);
     _logFile = logFile;
     return MyLog.init(
       level: myDebug ? Level.ALL : Level.INFO,
@@ -32,14 +36,27 @@ class MyLogDart with MyLogMixin {
   }
 
   @override
-  Future<String> getLogFile(bool debug, {int days = 3}) async {
+  Future<String> getLogFile(
+    bool debug, {
+    int days = 3,
+    String? pathStart,
+  }) async {
     DateTime dateTime = DateTime.now();
     final String tempPath;
-    if (debug) {
-      tempPath = 'data${path.separator}log';
+    if (pathStart != null && pathStart.isNotEmpty) {
+      if (pathStart.endsWith(path.separator)) {
+        tempPath = '${pathStart}log';
+      } else {
+        tempPath = '$pathStart${path.separator}log';
+      }
     } else {
-      tempPath = '${path.separator}log';
+      if (debug) {
+        tempPath = 'data${path.separator}log';
+      } else {
+        tempPath = '${path.separator}log';
+      }
     }
+
     Directory tmpDir = Directory(tempPath);
     if (!tmpDir.existsSync()) {
       tmpDir.createSync(recursive: true);
@@ -69,9 +86,9 @@ mixin MyLogMixin {
 
   DateFormat get dateFormatYMD => DateFormat("yyyy-MM-dd");
 
-  Future<Logger> init({bool debug = false, int days = 3});
+  Future<Logger> init({bool debug = false, int days = 3, String? pathStart});
 
-  Future<String> getLogFile(bool debug, {int days = 3});
+  Future<String> getLogFile(bool debug, {int days = 3, String? pathStart});
 
   Future<void> dispose() => MyLog.dispose();
 
