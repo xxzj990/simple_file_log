@@ -18,10 +18,14 @@ class MyLogFlutter with MyLogMixin {
   String? get logFile => _logFile;
 
   @override
-  Future<Logger> init({bool? debug, int days = 3}) async {
+  Future<Logger> init({
+    bool? debug,
+    int days = 3,
+    String? pathStart,
+  }) async {
     final myDebug = debug ?? kDebugMode;
 
-    final logFile = await getLogFile(myDebug, days: days);
+    final logFile = await getLogFile(myDebug, days: days, pathStart: pathStart);
     _logFile = logFile;
     return MyLog.init(
       level: myDebug ? Level.ALL : Level.INFO,
@@ -33,15 +37,28 @@ class MyLogFlutter with MyLogMixin {
   }
 
   @override
-  Future<String> getLogFile(bool debug, {int days = 3}) async {
-    Directory? tempDir;
-    if (Platform.isIOS) {
-      tempDir = await getApplicationDocumentsDirectory();
-    } else {
-      tempDir = await getExternalStorageDirectory();
-    }
+  Future<String> getLogFile(
+    bool debug, {
+    int days = 3,
+    String? pathStart,
+  }) async {
     DateTime dateTime = DateTime.now();
-    String tempPath = '${tempDir!.path}/log';
+    final String tempPath;
+    if (pathStart != null && pathStart.isNotEmpty) {
+      if (pathStart.endsWith('/')) {
+        tempPath = '${pathStart}log';
+      } else {
+        tempPath = '$pathStart/log';
+      }
+    } else {
+      Directory? tempDir;
+      if (Platform.isIOS) {
+        tempDir = await getApplicationDocumentsDirectory();
+      } else {
+        tempDir = await getExternalStorageDirectory();
+      }
+      tempPath = '${tempDir!.path}/log';
+    }
     Directory tmpDir = Directory(tempPath);
     if (!tmpDir.existsSync()) {
       tmpDir.createSync();

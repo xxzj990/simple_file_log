@@ -1,3 +1,7 @@
+## 0.0.8
+
+* simple_file_log to 0.0.8
+
 ## 0.0.7
 
 * simple_file_log to 0.0.7
