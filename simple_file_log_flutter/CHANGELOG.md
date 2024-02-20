@@ -1,3 +1,7 @@
+## 0.0.8+1
+
+* support web
+
 ## 0.0.8
 
 * simple_file_log to 0.0.8

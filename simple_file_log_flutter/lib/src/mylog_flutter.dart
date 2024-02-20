@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:simple_file_log/simple_file_log.dart';
+import 'package:universal_html/html.dart' as html;
 
 class MyLogFlutter with MyLogMixin {
   MyLogFlutter._();
@@ -25,14 +26,21 @@ class MyLogFlutter with MyLogMixin {
   }) async {
     final myDebug = debug ?? kDebugMode;
 
-    final logFile = await getLogFile(myDebug, days: days, pathStart: pathStart);
-    _logFile = logFile;
+    if (!kIsWeb) {
+      final logFile =
+          await getLogFile(myDebug, days: days, pathStart: pathStart);
+      _logFile = logFile;
+    }
+
     return MyLog.init(
       level: myDebug ? Level.ALL : Level.INFO,
-      logFile: File(logFile),
+      logFile: kIsWeb || _logFile == null ? null : File(_logFile!),
       append: !myDebug,
-      consoleLog: (time, msg) =>
-          myDebug ? debugPrint('$time $msg') : debugPrint(msg),
+      consoleLog: (time, msg) => kIsWeb
+          ? html.window.console.log('$time $msg')
+          : myDebug
+              ? debugPrint('$time $msg')
+              : debugPrint(msg),
     );
   }
 
