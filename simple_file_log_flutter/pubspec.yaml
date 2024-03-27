@@ -1,6 +1,6 @@
 name: simple_file_log_flutter
 description: "A log util with file for flutter."
-version: 0.0.8+1
+version: 0.0.8+2
 homepage: https://github.com/xxzj990/simple_file_log
 
 environment:

@@ -60,12 +60,12 @@ class MyLogFlutter with MyLogMixin {
       }
     } else {
       Directory? tempDir;
-      if (Platform.isIOS) {
-        tempDir = await getApplicationDocumentsDirectory();
-      } else {
+      if (Platform.isAndroid) {
         tempDir = await getExternalStorageDirectory();
+      } else {
+        tempDir = await getApplicationDocumentsDirectory();
       }
-      tempPath = '${tempDir!.path}/log';
+      tempPath = '${tempDir?.path}/log';
     }
     Directory tmpDir = Directory(tempPath);
     if (!tmpDir.existsSync()) {
@@ -73,6 +73,7 @@ class MyLogFlutter with MyLogMixin {
     }
 
     String savePath = '$tempPath/${dateFormatYMD.format(dateTime)}.log';
+    debugPrint('log save path:$savePath');
     final daysLog = <String>[savePath];
     for (int i = (days - 1); i > 0; i--) {
       String tmpPath =
