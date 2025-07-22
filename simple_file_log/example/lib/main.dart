@@ -6,7 +6,7 @@ void main() async {
   final myClassA = MyClassA();
   myClassA.testLog();
 
-  MyLogDart.log.dispose();
+  await MyLogDart.log.dispose();
 
   myClassA.testLog();
 
