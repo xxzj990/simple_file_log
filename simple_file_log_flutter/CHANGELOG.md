@@ -1,3 +1,7 @@
+## 0.0.9
+
+* simple_file_log to 0.0.9 
+
 ## 0.0.8+2
 
 * fix err
